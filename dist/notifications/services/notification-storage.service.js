@@ -17,10 +17,10 @@ let NotificationStorageService = class NotificationStorageService {
         this.notificationRepository = notificationRepository;
     }
     async saveNotification(token, notifyDto) {
-        return this.notificationRepository.createNotification(token, notifyDto.message, notifyDto.imageUrl, notifyDto.stickerPackageId, notifyDto.stickerId);
+        return this.notificationRepository.createNotification(token, notifyDto.message, notifyDto.type, notifyDto.imageUrl, notifyDto.stickerPackageId, notifyDto.stickerId);
     }
-    async getNotifications(token, page, limit) {
-        const [notifications, total] = await this.notificationRepository.getNotificationsByToken(token, page, limit);
+    async getNotifications(token, page, limit, type) {
+        const [notifications, total] = await this.notificationRepository.getNotificationsByToken(token, page, limit, type);
         return {
             items: notifications,
             total,

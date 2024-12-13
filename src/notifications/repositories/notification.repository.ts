@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Repository, DataSource } from 'typeorm';
 import { Notification } from '../entities/notification.entity';
+import { NotificationType } from '../enums/notification-type.enum';
 
 @Injectable()
 export class NotificationRepository extends Repository<Notification> {
@@ -11,6 +12,7 @@ export class NotificationRepository extends Repository<Notification> {
   async createNotification(
     token: string,
     message: string,
+    type: NotificationType = NotificationType.DEVICES_LOG,
     imageUrl?: string,
     stickerPackageId?: string,
     stickerId?: string,
@@ -18,6 +20,7 @@ export class NotificationRepository extends Repository<Notification> {
     const notification = this.create({
       token,
       message,
+      type,
       imageUrl,
       stickerPackageId,
       stickerId,
@@ -30,16 +33,21 @@ export class NotificationRepository extends Repository<Notification> {
     token: string,
     page: number,
     limit: number,
+    type?: NotificationType,
   ): Promise<[Notification[], number]> {
     const skip = (page - 1) * limit;
 
-    const [notifications, total] = await this.findAndCount({
-      where: { token },
-      order: { createdAt: 'DESC' },
-      skip,
-      take: limit,
-    });
+    const queryBuilder = this.createQueryBuilder('notification')
+      .where('notification.token = :token', { token });
 
-    return [notifications, total];
+    if (type) {
+      queryBuilder.andWhere('notification.type = :type', { type });
+    }
+
+    return queryBuilder
+      .orderBy('notification.createdAt', 'DESC')
+      .skip(skip)
+      .take(limit)
+      .getManyAndCount();
   }
 }

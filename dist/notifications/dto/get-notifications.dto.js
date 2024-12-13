@@ -13,6 +13,7 @@ exports.GetNotificationsDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
 const class_validator_1 = require("class-validator");
 const class_transformer_1 = require("class-transformer");
+const notification_type_enum_1 = require("../enums/notification-type.enum");
 class GetNotificationsDto {
     constructor() {
         this.page = 1;
@@ -46,4 +47,14 @@ __decorate([
     (0, class_validator_1.Min)(1),
     __metadata("design:type", Number)
 ], GetNotificationsDto.prototype, "limit", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'Filter notifications by type',
+        enum: notification_type_enum_1.NotificationType,
+        required: false,
+    }),
+    (0, class_validator_1.IsOptional)(),
+    (0, class_validator_1.IsEnum)(notification_type_enum_1.NotificationType),
+    __metadata("design:type", String)
+], GetNotificationsDto.prototype, "type", void 0);
 //# sourceMappingURL=get-notifications.dto.js.map

@@ -1,5 +1,6 @@
-import { IsString, IsOptional } from 'class-validator';
+import { IsString, IsOptional, IsEnum } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { NotificationType } from '../enums/notification-type.enum';
 
 export class NotifyDto {
   @ApiProperty({
@@ -8,6 +9,16 @@ export class NotifyDto {
   })
   @IsString()
   message: string;
+
+  @ApiProperty({
+    description: 'The type of notification',
+    enum: NotificationType,
+    example: NotificationType.DEVICES_LOG,
+    default: NotificationType.DEVICES_LOG
+  })
+  @IsEnum(NotificationType)
+  @IsOptional()
+  type: NotificationType = NotificationType.DEVICES_LOG;
 
   @ApiProperty({
     description: 'Optional image URL to be included in the notification',

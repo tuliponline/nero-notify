@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsInt, Min } from 'class-validator';
+import { IsOptional, IsInt, Min, IsEnum } from 'class-validator';
 import { Type } from 'class-transformer';
+import { NotificationType } from '../enums/notification-type.enum';
 
 export class GetNotificationsDto {
   @ApiProperty({
@@ -26,4 +27,13 @@ export class GetNotificationsDto {
   @IsInt()
   @Min(1)
   limit?: number = 10;
+
+  @ApiProperty({
+    description: 'Filter notifications by type',
+    enum: NotificationType,
+    required: false,
+  })
+  @IsOptional()
+  @IsEnum(NotificationType)
+  type?: NotificationType;
 }

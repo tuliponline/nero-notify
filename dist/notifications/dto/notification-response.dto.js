@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.PaginatedNotificationsResponseDto = exports.NotificationResponseDto = void 0;
 const swagger_1 = require("@nestjs/swagger");
+const notification_type_enum_1 = require("../enums/notification-type.enum");
 class NotificationResponseDto {
 }
 exports.NotificationResponseDto = NotificationResponseDto;
@@ -22,6 +23,10 @@ __decorate([
     (0, swagger_1.ApiProperty)(),
     __metadata("design:type", String)
 ], NotificationResponseDto.prototype, "message", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ enum: notification_type_enum_1.NotificationType }),
+    __metadata("design:type", String)
+], NotificationResponseDto.prototype, "type", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ required: false }),
     __metadata("design:type", String)

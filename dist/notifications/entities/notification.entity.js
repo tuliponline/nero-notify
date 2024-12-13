@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Notification = void 0;
 const typeorm_1 = require("typeorm");
+const notification_type_enum_1 = require("../enums/notification-type.enum");
 let Notification = class Notification {
 };
 exports.Notification = Notification;
@@ -26,6 +27,14 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Notification.prototype, "message", void 0);
+__decorate([
+    (0, typeorm_1.Column)({
+        type: 'enum',
+        enum: notification_type_enum_1.NotificationType,
+        default: notification_type_enum_1.NotificationType.DEVICES_LOG
+    }),
+    __metadata("design:type", String)
+], Notification.prototype, "type", void 0);
 __decorate([
     (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)

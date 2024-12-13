@@ -3,6 +3,7 @@ import { NotificationRepository } from '../repositories/notification.repository'
 import { NotifyDto } from '../dto/notify.dto';
 import { Notification } from '../entities/notification.entity';
 import { PaginatedNotificationsResponseDto } from '../dto/notification-response.dto';
+import { NotificationType } from '../enums/notification-type.enum';
 
 @Injectable()
 export class NotificationStorageService {
@@ -12,6 +13,7 @@ export class NotificationStorageService {
     return this.notificationRepository.createNotification(
       token,
       notifyDto.message,
+      notifyDto.type,
       notifyDto.imageUrl,
       notifyDto.stickerPackageId,
       notifyDto.stickerId,
@@ -22,11 +24,13 @@ export class NotificationStorageService {
     token: string,
     page: number,
     limit: number,
+    type?: NotificationType,
   ): Promise<PaginatedNotificationsResponseDto> {
     const [notifications, total] = await this.notificationRepository.getNotificationsByToken(
       token,
       page,
       limit,
+      type,
     );
 
     return {

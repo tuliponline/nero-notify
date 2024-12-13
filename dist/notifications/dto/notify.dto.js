@@ -12,7 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.NotifyDto = void 0;
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
+const notification_type_enum_1 = require("../enums/notification-type.enum");
 class NotifyDto {
+    constructor() {
+        this.type = notification_type_enum_1.NotificationType.DEVICES_LOG;
+    }
 }
 exports.NotifyDto = NotifyDto;
 __decorate([
@@ -23,6 +27,17 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], NotifyDto.prototype, "message", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({
+        description: 'The type of notification',
+        enum: notification_type_enum_1.NotificationType,
+        example: notification_type_enum_1.NotificationType.DEVICES_LOG,
+        default: notification_type_enum_1.NotificationType.DEVICES_LOG
+    }),
+    (0, class_validator_1.IsEnum)(notification_type_enum_1.NotificationType),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], NotifyDto.prototype, "type", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({
         description: 'Optional image URL to be included in the notification',

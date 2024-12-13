@@ -13,30 +13,35 @@ exports.NotificationRepository = void 0;
 const common_1 = require("@nestjs/common");
 const typeorm_1 = require("typeorm");
 const notification_entity_1 = require("../entities/notification.entity");
+const notification_type_enum_1 = require("../enums/notification-type.enum");
 let NotificationRepository = class NotificationRepository extends typeorm_1.Repository {
     constructor(dataSource) {
         super(notification_entity_1.Notification, dataSource.createEntityManager());
         this.dataSource = dataSource;
     }
-    async createNotification(token, message, imageUrl, stickerPackageId, stickerId) {
+    async createNotification(token, message, type = notification_type_enum_1.NotificationType.DEVICES_LOG, imageUrl, stickerPackageId, stickerId) {
         const notification = this.create({
             token,
             message,
+            type,
             imageUrl,
             stickerPackageId,
             stickerId,
         });
         return this.save(notification);
     }
-    async getNotificationsByToken(token, page, limit) {
+    async getNotificationsByToken(token, page, limit, type) {
         const skip = (page - 1) * limit;
-        const [notifications, total] = await this.findAndCount({
-            where: { token },
-            order: { createdAt: 'DESC' },
-            skip,
-            take: limit,
-        });
-        return [notifications, total];
+        const queryBuilder = this.createQueryBuilder('notification')
+            .where('notification.token = :token', { token });
+        if (type) {
+            queryBuilder.andWhere('notification.type = :type', { type });
+        }
+        return queryBuilder
+            .orderBy('notification.createdAt', 'DESC')
+            .skip(skip)
+            .take(limit)
+            .getManyAndCount();
     }
 };
 exports.NotificationRepository = NotificationRepository;

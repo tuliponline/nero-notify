@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { NotificationType } from '../enums/notification-type.enum';
 
 export class NotificationResponseDto {
   @ApiProperty()
@@ -6,6 +7,9 @@ export class NotificationResponseDto {
 
   @ApiProperty()
   message: string;
+
+  @ApiProperty({ enum: NotificationType })
+  type: NotificationType;
 
   @ApiProperty({ required: false })
   imageUrl?: string;

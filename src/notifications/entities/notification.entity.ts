@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { NotificationType } from '../enums/notification-type.enum';
 
 @Entity('notifications')
 export class Notification {
@@ -10,6 +11,13 @@ export class Notification {
 
   @Column()
   message: string;
+
+  @Column({
+    type: 'enum',
+    enum: NotificationType,
+    default: NotificationType.DEVICES_LOG
+  })
+  type: NotificationType;
 
   @Column({ nullable: true })
   imageUrl: string;
